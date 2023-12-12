@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import classes from "./Auth.module.css";
-const FIREBASE_API_KEY = "AIzaSyCFHRwOlXhzYQ7q1JG0hePZcY5aEACfuxE";
+const FIREBASE_API_KEY = "API_KEY";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -84,7 +84,7 @@ const Auth = () => {
   };
 
   return (
-    <Container className="w-50 shadow p-4 rounded mt-5">
+    <Container fluid className="w-50 shadow p-4 rounded mt-5">
       <h1 className="text-center">{isLogin ? "Login" : "Signup"}</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -107,6 +107,11 @@ const Auth = () => {
             value={formState.password}
             onChange={inputHandler}
           />
+          {!isLogin && (
+            <Form.Text className="text-muted">
+              Length must be greater than 6.
+            </Form.Text>
+          )}
         </Form.Group>
 
         {!isLogin && (
