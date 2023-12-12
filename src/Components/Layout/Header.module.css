@@ -1,0 +1,11 @@
+.activeClass {
+  text-decoration: none;
+  margin: 0 10px;
+  color: lightgreen;
+}
+
+.defaultClass {
+  text-decoration: none;
+  margin: 0 10px;
+  color: green;
+}
