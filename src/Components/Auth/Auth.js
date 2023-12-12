@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import classes from "./Auth.module.css";
+import { useNavigate } from "react-router-dom";
+
+import AuthContext from "../../store/Auth-context";
 const FIREBASE_API_KEY = "API_KEY";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -66,8 +71,7 @@ const Auth = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.idToken);
-        alert("Signup successfull!!");
+        authCtx.login(data.idToken);
         setFormState({
           email: "",
           password: "",
@@ -75,6 +79,7 @@ const Auth = () => {
           isPasswordValid: true,
           isValidForm: false,
         });
+        navigate("/", { replace: true });
       } else {
         throw new Error(data.error.message);
       }
