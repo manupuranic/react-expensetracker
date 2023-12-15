@@ -1,0 +1,7 @@
+.notification {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f7f9;
+  align-content: center;
+  padding: 2px 0;
+}

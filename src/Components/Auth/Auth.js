@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Container, Form } from "react-bootstrap";
-import "./Auth.css";
+import classes from "./Auth.module.css";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../UI/Button";
@@ -91,7 +91,7 @@ const Auth = () => {
   };
 
   return (
-    <Container fluid className="auth-body mx-auto shadow p-4 rounded mt-4">
+    <Container className={classes["auth-body"]}>
       <h1 className="text-center" style={{ color: COLORS.primaryDark }}>
         {isLogin ? "Login" : "Signup"}
       </h1>
@@ -134,7 +134,7 @@ const Auth = () => {
               onChange={inputHandler}
             />
             {!formState.isPasswordValid && (
-              <p className="passwordStatus">Passwords don't match!!</p>
+              <p className={classes.passwordStatus}>Passwords don't match!!</p>
             )}
           </Form.Group>
         )}

@@ -2,7 +2,6 @@ import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
-import COLORS from "../UI/Constants";
 
 const Header = () => {
   return (
@@ -11,8 +10,7 @@ const Header = () => {
         <Container>
           <Navbar.Brand
             href="#home"
-            className="fw-bold fst-italic"
-            style={{ color: COLORS.primaryDark }}>
+            className="fw-bold fst-italic text-primary">
             Expense Tracker
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -31,6 +29,13 @@ const Header = () => {
                   isActive ? classes.activeClass : classes.defaultClass
                 }>
                 Auth
+              </NavLink>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  isActive ? classes.activeClass : classes.defaultClass
+                }>
+                Account
               </NavLink>
             </Nav>
           </Navbar.Collapse>
