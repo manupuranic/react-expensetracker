@@ -1,6 +1,6 @@
 export const getUserDetails = async () => {
   const URL =
-    "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCFHRwOlXhzYQ7q1JG0hePZcY5aEACfuxE";
+    "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=API_KEY";
   try {
     const response = await fetch(URL, {
       method: "POST",
@@ -32,7 +32,7 @@ export const getUserDetails = async () => {
 
 export const updateUserDetails = async (name, photoURL) => {
   const URL =
-    "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCFHRwOlXhzYQ7q1JG0hePZcY5aEACfuxE";
+    "https://identitytoolkit.googleapis.com/v1/accounts:update?key=API_KEY";
   try {
     const response = await fetch(URL, {
       method: "POST",
