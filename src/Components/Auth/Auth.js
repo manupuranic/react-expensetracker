@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
 import COLORS from "../UI/Constants";
 import AuthContext from "../../store/Auth-context";
-const FIREBASE_API_KEY = "API_KEY";
+const FIREBASE_API_KEY = "AIzaSyCFHRwOlXhzYQ7q1JG0hePZcY5aEACfuxE";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
   const [formState, setFormState] = useState({

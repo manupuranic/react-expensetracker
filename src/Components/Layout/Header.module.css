@@ -1,13 +1,14 @@
 .activeClass {
-  text-decoration: none;
+  text-decoration: solid;
   margin: 0 10px;
   color: var(--primary-light);
-  border-bottom: 3px solid var(--primary-dark);
+  margin-top: 13px;
 }
 
 .defaultClass {
   text-decoration: none;
   margin: 0 10px;
+  margin-top: 13px;
   color: var(--primary-dark);
 }
 
