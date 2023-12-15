@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import classes from "./Auth.module.css";
+import { Container, Form } from "react-bootstrap";
+import "./Auth.css";
 import { useNavigate } from "react-router-dom";
 
+import Button from "../UI/Button";
+import COLORS from "../UI/Constants";
 import AuthContext from "../../store/Auth-context";
 const FIREBASE_API_KEY = "API_KEY";
 
@@ -89,8 +91,10 @@ const Auth = () => {
   };
 
   return (
-    <Container fluid className="w-50 shadow p-4 rounded mt-5">
-      <h1 className="text-center">{isLogin ? "Login" : "Signup"}</h1>
+    <Container fluid className="auth-body mx-auto shadow p-4 rounded mt-4">
+      <h1 className="text-center" style={{ color: COLORS.primaryDark }}>
+        {isLogin ? "Login" : "Signup"}
+      </h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
@@ -130,24 +134,20 @@ const Auth = () => {
               onChange={inputHandler}
             />
             {!formState.isPasswordValid && (
-              <p className={classes.passwordStatus}>Passwords don't match!!</p>
+              <p className="passwordStatus">Passwords don't match!!</p>
             )}
           </Form.Group>
         )}
 
         <Button
-          variant="success"
-          disabled={!formState.isValidForm}
-          className="w-100"
-          type="submit">
+          variant="primary"
+          btn={{ disabled: !formState.isValidForm, type: "Submit" }}>
           {isLogin ? "Login" : "Sign Up"}
         </Button>
 
         <Button
-          variant="outline-dark"
-          className="d-block w-100 mt-1"
-          type="button"
-          onClick={toggleState}>
+          variant="secondary"
+          btn={{ type: "button", onClick: toggleState }}>
           {footer}
         </Button>
       </Form>

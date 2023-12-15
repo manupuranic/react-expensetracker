@@ -1,0 +1,13 @@
+.passwordStatus {
+  color: red;
+}
+
+.auth-body {
+  width: 50%;
+}
+
+@media (max-width: 648px) {
+  .auth-body {
+    width: 100%;
+  }
+}

@@ -1,11 +1,18 @@
 .activeClass {
   text-decoration: none;
   margin: 0 10px;
-  color: lightgreen;
+  color: var(--primary-light);
+  border-bottom: 3px solid var(--primary-dark);
 }
 
 .defaultClass {
   text-decoration: none;
   margin: 0 10px;
-  color: green;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 992px) {
+  .activeClass {
+    border: none;
+  }
 }
