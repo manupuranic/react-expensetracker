@@ -17,6 +17,8 @@ export const getUserDetails = async () => {
       return {
         displayName: user.displayName,
         photoURL: user.photoUrl,
+        isEmailVerified: user.emailVerified,
+        email: user.email,
       };
     } else {
       throw new Error(data.error.message);
@@ -51,7 +53,34 @@ export const updateUserDetails = async (name, photoURL) => {
       return {
         displayName: data.displayName,
         photoURL: data.photoUrl,
+        isEmailVerified: data.emailVerified,
+        email: data.email,
       };
+    } else {
+      throw new Error(data.error.message);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyMailApi = async () => {
+  const URL =
+    "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=API_KEY";
+  try {
+    const response = await fetch(URL, {
+      method: "POST",
+      body: JSON.stringify({
+        idToken: localStorage.getItem("token"),
+        requestType: "VERIFY_EMAIL",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return "mail sent";
     } else {
       throw new Error(data.error.message);
     }

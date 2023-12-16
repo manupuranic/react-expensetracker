@@ -1,17 +1,25 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { getUserDetails, updateUserDetails } from "../utils/profile";
+import {
+  getUserDetails,
+  updateUserDetails,
+  verifyMailApi,
+} from "../utils/profile";
 
 const ProfileContext = createContext({
   displayName: null,
   photoURL: null,
   isComplete: false,
+  isEmailVerified: false,
+  email: null,
   updateDetails: (name, photoURL) => {},
+  verifyMail: () => {},
 });
 
 export const ProfileProvider = (props) => {
   const [userData, setUserData] = useState({
     displayName: null,
     photoURL: null,
+    isEmailVerified: false,
   });
 
   const fetchUserData = useCallback(async () => {
@@ -32,11 +40,18 @@ export const ProfileProvider = (props) => {
   //     setUserData(ProfileService.getUserDetails());
   //   }
 
+  const verifyMailHandler = async () => {
+    await verifyMailApi();
+  };
+
   const profileCtx = {
     displayName: userData.displayName,
     photoURL: userData.photoURL,
+    email: userData.email,
     isComplete: !!userData.displayName && !!userData.photoURL,
+    isEmailVerified: userData.isEmailVerified,
     updateDetails: updateUser,
+    verifyMail: verifyMailHandler,
   };
 
   return (
