@@ -3,6 +3,7 @@ import {
   getUserDetails,
   updateUserDetails,
   verifyMailApi,
+  resetPassword,
 } from "../utils/profile";
 
 const ProfileContext = createContext({
@@ -13,6 +14,7 @@ const ProfileContext = createContext({
   email: null,
   updateDetails: (name, photoURL) => {},
   verifyMail: () => {},
+  resetPassword: (email) => {},
 });
 
 export const ProfileProvider = (props) => {
@@ -44,6 +46,10 @@ export const ProfileProvider = (props) => {
     await verifyMailApi();
   };
 
+  const resetPasswordHandler = async (email) => {
+    await resetPassword(email);
+  };
+
   const profileCtx = {
     displayName: userData.displayName,
     photoURL: userData.photoURL,
@@ -52,6 +58,7 @@ export const ProfileProvider = (props) => {
     isEmailVerified: userData.isEmailVerified,
     updateDetails: updateUser,
     verifyMail: verifyMailHandler,
+    resetPassword: resetPasswordHandler,
   };
 
   return (

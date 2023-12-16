@@ -19,7 +19,7 @@ const Header = () => {
     <header className="shadow-sm">
       <Navbar expand="lg" className="bg-body-light">
         <Container>
-          <Navbar.Brand href="#home" className="fw-bold text-primary">
+          <Navbar.Brand href="#home" className="fw-bold fs-3 text-primary">
             Expense Tracker
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -56,16 +56,15 @@ const Header = () => {
                       src={userImg}
                     />
                   }>
-                  <NavDropdown.Item>
-                    <Link style={{ textDecoration: "none" }} to="/profile">
-                      <p>Account</p>
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item>
-                    <p onClick={authCtx.logout} className="text-primary">
-                      Logout
-                    </p>
-                  </NavDropdown.Item>
+                  <Link style={{ textDecoration: "none" }} to="/profile">
+                    <p className="ms-3">Account</p>
+                  </Link>
+                  <p
+                    onClick={authCtx.logout}
+                    style={{ cursor: "pointer" }}
+                    className="text-primary ms-3">
+                    Logout
+                  </p>
                 </NavDropdown>
               )}
             </Nav>

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { Container, Form } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import classes from "./Auth.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../UI/Button";
 import COLORS from "../UI/Constants";
@@ -91,67 +91,79 @@ const Auth = () => {
   };
 
   return (
-    <Container className={classes["auth-body"]}>
-      <h1 className="text-center" style={{ color: COLORS.primaryDark }}>
-        {isLogin ? "Login" : "Signup"}
-      </h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="email"
-            value={formState.email}
-            onChange={inputHandler}
-          />
-        </Form.Group>
+    <Row className="mw-100">
+      <Col xs={12} md={4} className="mx-auto">
+        <Container className="shadow mt-5 p-3 rounded">
+          <h1 className="text-center" style={{ color: COLORS.primaryDark }}>
+            {isLogin ? "Login" : "Signup"}
+          </h1>
+          <Form onSubmit={submitHandler}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                value={formState.email}
+                onChange={inputHandler}
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formState.password}
-            onChange={inputHandler}
-          />
-          {!isLogin && (
-            <Form.Text className="text-muted">
-              Length must be greater than 6.
-            </Form.Text>
-          )}
-        </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formState.password}
+                onChange={inputHandler}
+              />
+              {!isLogin && (
+                <Form.Text className="text-muted">
+                  Length must be greater than 6.
+                </Form.Text>
+              )}
+            </Form.Group>
 
-        {!isLogin && (
-          <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              value={formState.confirmPassword}
-              onChange={inputHandler}
-            />
-            {!formState.isPasswordValid && (
-              <p className={classes.passwordStatus}>Passwords don't match!!</p>
+            {!isLogin && (
+              <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  value={formState.confirmPassword}
+                  onChange={inputHandler}
+                />
+                {!formState.isPasswordValid && (
+                  <p className={classes.passwordStatus}>
+                    Passwords don't match!!
+                  </p>
+                )}
+              </Form.Group>
             )}
-          </Form.Group>
-        )}
 
-        <Button
-          variant="primary"
-          btn={{ disabled: !formState.isValidForm, type: "Submit" }}>
-          {isLogin ? "Login" : "Sign Up"}
-        </Button>
+            {isLogin && (
+              <Link to="/forgotpassword">
+                <p className="text-primary text-center">Forgot Password?</p>
+              </Link>
+            )}
 
-        <Button
-          variant="secondary"
-          btn={{ type: "button", onClick: toggleState }}>
-          {footer}
-        </Button>
-      </Form>
-    </Container>
+            <Button
+              variant="primary"
+              btn={{ disabled: !formState.isValidForm, type: "Submit" }}>
+              {isLogin ? "Login" : "Sign Up"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              btn={{ type: "button", onClick: toggleState }}>
+              {footer}
+            </Button>
+          </Form>
+        </Container>
+      </Col>
+    </Row>
   );
 };
 

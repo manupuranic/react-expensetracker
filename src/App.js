@@ -5,6 +5,7 @@ import { ProfileProvider } from "./store/Profile-context";
 import Home from "./Pages/Home";
 import Auth from "./Pages/Auth";
 import Profile from "./Pages/Profile";
+import ForgotPassword from "./Pages/ForgotPassword";
 import RootLayout from "./Components/Layout/RootLayout";
 import { useContext } from "react";
 
@@ -19,6 +20,7 @@ function App() {
             path="/profile"
             element={authCtx.isLoggedIn ? <Profile /> : <Navigate to="/auth" />}
           />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </RootLayout>

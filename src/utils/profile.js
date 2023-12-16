@@ -1,30 +1,38 @@
 export const getUserDetails = async () => {
   const URL =
     "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=API_KEY";
-  try {
-    const response = await fetch(URL, {
-      method: "POST",
-      body: JSON.stringify({
-        idToken: localStorage.getItem("token"),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      const user = data.users[0];
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: localStorage.getItem("token"),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        const user = data.users[0];
+        return {
+          displayName: user.displayName,
+          photoURL: user.photoUrl,
+          isEmailVerified: user.emailVerified,
+          email: user.email,
+        };
+      } else {
+        throw new Error(data.error.message);
+      }
+    } catch (error) {
+      console.log(error);
       return {
-        displayName: user.displayName,
-        photoURL: user.photoUrl,
-        isEmailVerified: user.emailVerified,
-        email: user.email,
+        displayName: "",
+        photoURL: "",
       };
-    } else {
-      throw new Error(data.error.message);
     }
-  } catch (error) {
-    console.log(error);
+  } else {
     return {
       displayName: "",
       photoURL: "",
@@ -86,5 +94,32 @@ export const verifyMailApi = async () => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const resetPassword = async (email) => {
+  const URL =
+    "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=API_KEY";
+  try {
+    const response = await fetch(URL, {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        requestType: "PASSWORD_RESET",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log(data);
+      alert("Mail has been sent, Please check!");
+    } else {
+      throw new Error(data.error.message);
+    }
+  } catch (error) {
+    console.log(error);
+    alert(error);
   }
 };
