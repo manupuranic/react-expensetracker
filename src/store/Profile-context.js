@@ -15,6 +15,7 @@ const ProfileContext = createContext({
   updateDetails: (name, photoURL) => {},
   verifyMail: () => {},
   resetPassword: (email) => {},
+  fetchDetails: () => {},
 });
 
 export const ProfileProvider = (props) => {
@@ -59,6 +60,7 @@ export const ProfileProvider = (props) => {
     updateDetails: updateUser,
     verifyMail: verifyMailHandler,
     resetPassword: resetPasswordHandler,
+    fetchDetails: fetchUserData,
   };
 
   return (

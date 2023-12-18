@@ -8,22 +8,27 @@ import Profile from "./Pages/Profile";
 import ForgotPassword from "./Pages/ForgotPassword";
 import RootLayout from "./Components/Layout/RootLayout";
 import { useContext } from "react";
+import { ExpenseProvider } from "./store/Expense-context";
 
 function App() {
   const authCtx = useContext(AuthContext);
   return (
     <ProfileProvider>
-      <RootLayout>
-        <Routes>
-          <Route path="/auth" element={<Auth />} />
-          <Route
-            path="/profile"
-            element={authCtx.isLoggedIn ? <Profile /> : <Navigate to="/auth" />}
-          />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </RootLayout>
+      <ExpenseProvider>
+        <RootLayout>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route
+              path="/profile"
+              element={
+                authCtx.isLoggedIn ? <Profile /> : <Navigate to="/auth" />
+              }
+            />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </RootLayout>
+      </ExpenseProvider>
     </ProfileProvider>
   );
 }

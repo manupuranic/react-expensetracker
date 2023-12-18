@@ -6,12 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
 import COLORS from "../UI/Constants";
 import AuthContext from "../../store/Auth-context";
+import ProfileContext from "../../store/Profile-context";
 const FIREBASE_API_KEY = "API_KEY";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
+  const profileCtx = useContext(ProfileContext);
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -81,6 +83,7 @@ const Auth = () => {
           isPasswordValid: true,
           isValidForm: false,
         });
+        profileCtx.fetchDetails();
         navigate("/", { replace: true });
       } else {
         throw new Error(data.error.message);
