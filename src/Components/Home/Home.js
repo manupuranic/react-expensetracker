@@ -13,6 +13,7 @@ const Home = () => {
       </h3>
       <span className="d-block mt-4 fs-4 fw-semibold text-center">
         <Link
+          to="/auth"
           className="text-white bg-primary p-2 rounded"
           style={{ textDecoration: "none" }}>
           Login

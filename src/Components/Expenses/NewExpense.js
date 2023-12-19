@@ -36,7 +36,9 @@ const NewExpense = (props) => {
 
   return (
     <Container>
-      <Form onSubmit={submitHandler}>
+      <Form
+        onSubmit={submitHandler}
+        className="d-lg-flex d-block justify-content-around align-items-center">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Expense Amount:</Form.Label>
           <Form.Control
@@ -76,14 +78,16 @@ const NewExpense = (props) => {
             <option value="Others">Others</option>
           </Form.Select>
         </Form.Group>
-        <Button type="submit">Add Expense</Button>
-        <Button
-          onClick={props.onHideForm}
-          type="button"
-          className="ms-3"
-          variant="outline-primary">
-          Cancel
-        </Button>
+        <div>
+          <Button type="submit">Add Expense</Button>
+          <Button
+            onClick={props.onHideForm}
+            type="button"
+            className="ms-3"
+            variant="outline-primary">
+            Cancel
+          </Button>
+        </div>
       </Form>
     </Container>
   );

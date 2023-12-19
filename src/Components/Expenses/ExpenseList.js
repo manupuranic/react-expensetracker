@@ -13,7 +13,7 @@ const ExpenseList = (props) => {
         <span className="fs-3 fw-semibold text-primary text-capitalize">
           {props.desc}
         </span>
-        <span className="fst-italic d-block text-secondary">
+        <span className="fst-italic d-block text-center text-secondary">
           {props.category}
         </span>
       </div>
