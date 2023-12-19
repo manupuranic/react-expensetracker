@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import ExpenseContext from "../../store/Expense-context";
 
@@ -10,6 +10,18 @@ const NewExpense = (props) => {
     desc: "",
     category: 0,
   });
+  const edit = props.edit;
+  const { amount, desc, category } = props.values;
+
+  useEffect(() => {
+    if (edit) {
+      setFormState({
+        amount: amount,
+        desc: desc,
+        category: category,
+      });
+    }
+  }, [edit, amount, desc, category]);
 
   const inputHandler = (e) => {
     const updatedState = {
@@ -21,15 +33,20 @@ const NewExpense = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    expenseCtx.addExpense({
+    const expense = {
       amount: formState.amount,
       desc: formState.desc,
       category: formState.category,
-    });
+    };
+    if (!props.edit) {
+      expenseCtx.addExpense(expense);
+    } else {
+      expenseCtx.editExpenses(expense, props.values.id);
+    }
     setFormState({
       amount: "",
       desc: "",
-      category: "",
+      category: 0,
     });
     props.onHideForm();
   };
@@ -79,7 +96,9 @@ const NewExpense = (props) => {
           </Form.Select>
         </Form.Group>
         <div>
-          <Button type="submit">Add Expense</Button>
+          <Button type="submit">
+            {props.edit ? "update Expense" : "Add Expense"}
+          </Button>
           <Button
             onClick={props.onHideForm}
             type="button"

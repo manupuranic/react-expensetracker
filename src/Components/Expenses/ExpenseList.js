@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
+import ExpenseContext from "../../store/Expense-context";
 
 const ExpenseList = (props) => {
+  const expenseCtx = useContext(ExpenseContext);
+
+  const deleteExpenseHandler = () => {
+    expenseCtx.deleteExpense(props.id);
+  };
+
+  const editExpenseHandler = () => {
+    props.onEdit({
+      amount: props.amount,
+      id: props.id,
+      desc: props.desc,
+      category: props.category,
+    });
+  };
+
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       <div
@@ -10,16 +26,22 @@ const ExpenseList = (props) => {
         <span>₹{props.amount}</span>
       </div>
       <div>
-        <span className="fs-3 fw-semibold text-primary text-capitalize">
+        <span className="fs-3 d-block fw-semibold text-primary text-capitalize">
           {props.desc}
         </span>
-        <span className="fst-italic d-block text-center text-secondary">
+        <span className="fst-italic d-block mb-2 text-center text-secondary">
           {props.category}
         </span>
       </div>
       <div>
-        <Button type="button">Edit</Button>
-        <Button variant="outline-primary" className="ms-2" type="button">
+        <Button onClick={editExpenseHandler} type="button">
+          Edit
+        </Button>
+        <Button
+          onClick={deleteExpenseHandler}
+          variant="outline-primary"
+          className="ms-2"
+          type="button">
           Delete
         </Button>
       </div>

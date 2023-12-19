@@ -1,5 +1,10 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { addNewExpense, fetchExpenses } from "../utils/expense";
+import {
+  addNewExpense,
+  fetchExpenses,
+  updateExpense,
+  deleteExpenseApi,
+} from "../utils/expense";
 
 const ExpenseContext = createContext({
   expenses: [
@@ -13,6 +18,8 @@ const ExpenseContext = createContext({
   totalExpense: 0,
   addExpense: (expense) => {},
   getExpenses: () => {},
+  editExpenses: (expense) => {},
+  deleteExpense: (id) => {},
 });
 
 export const ExpenseProvider = (props) => {
@@ -44,7 +51,7 @@ export const ExpenseProvider = (props) => {
 
   const addExpenseHandler = async (expense) => {
     const newExpense = {
-      amount: expense.amount,
+      amount: parseFloat(expense.amount),
       desc: expense.desc,
       category: expense.category,
     };
@@ -55,11 +62,29 @@ export const ExpenseProvider = (props) => {
     setTotal((prevTotal) => prevTotal + parseFloat(newExpense.amount));
   };
 
+  const editExpenseHandler = async (expense, id) => {
+    const updatedExpense = {
+      id: id,
+      amount: parseFloat(expense.amount),
+      desc: expense.desc,
+      category: expense.category,
+    };
+    await updateExpense(updatedExpense, id);
+    await getExpenses();
+  };
+
+  const deleteExpenseHandler = async (id) => {
+    await deleteExpenseApi(id);
+    await getExpenses();
+  };
+
   const expenseCtx = {
     expenses: expenses,
     totalExpense: total,
     addExpense: addExpenseHandler,
     getExpenses: getExpenses,
+    editExpenses: editExpenseHandler,
+    deleteExpense: deleteExpenseHandler,
   };
 
   return (

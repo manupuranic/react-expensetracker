@@ -8,9 +8,32 @@ import classes from "./Expense.module.css";
 const Expense = () => {
   const expenseCtx = useContext(ExpenseContext);
   const [hideForm, setHideForm] = useState(true);
+  const [edit, setEdit] = useState(false);
+  const [editValues, setEditValues] = useState({
+    id: "",
+    amount: "",
+    desc: "",
+    category: 0,
+  });
+
+  // const toggleEdit = () => {
+  //   setEdit((prevState) => !prevState);
+  // };
 
   const toggleForm = () => {
+    setEdit(false);
     setHideForm((prevState) => !prevState);
+  };
+
+  const editExpenses = (expense) => {
+    toggleForm();
+    setEdit(true);
+    setEditValues({
+      id: expense.id,
+      amount: expense.amount,
+      desc: expense.desc,
+      category: expense.category,
+    });
   };
 
   let content;
@@ -18,9 +41,11 @@ const Expense = () => {
     content = expenseCtx.expenses.map((expense) => (
       <ExpenseList
         key={expense.id}
+        id={expense.id}
         amount={expense.amount}
         desc={expense.desc}
         category={expense.category}
+        onEdit={editExpenses}
       />
     ));
   } else {
@@ -46,7 +71,11 @@ const Expense = () => {
         <p className="fs-1 fw-bold">₹{expenseCtx.totalExpense.toFixed(2)}</p>
       </div>
       <Container className="shadow p-4 mt-4 rounded-4 d-flex justify-content-center">
-        {!hideForm ? <NewExpense onHideForm={toggleForm} /> : addExpenseButton}
+        {!hideForm ? (
+          <NewExpense edit={edit} values={editValues} onHideForm={toggleForm} />
+        ) : (
+          addExpenseButton
+        )}
       </Container>
       <Container className="shadow p-4 mt-4 mb-4 rounded-4">
         <ul className="list-group">{content}</ul>
