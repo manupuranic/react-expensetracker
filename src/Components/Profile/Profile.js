@@ -1,14 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
 import { Button, Container, Form } from "react-bootstrap";
-import ProfileContext from "../../store/Profile-context";
+
+import { updateUserDetails, getUserDetails } from "../../utils/profile";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
-  const profileCtx = useContext(ProfileContext);
+
+  const { displayName, photoURL, email } = useSelector(
+    (state) => state.profile
+  );
+
   const [userData, setUserData] = useState({
-    displayName: profileCtx.displayName ? profileCtx.displayName : "",
-    photoURL: profileCtx.photoURL ? profileCtx.photoURL : "",
-    email: profileCtx.email,
+    displayName: displayName,
+    photoURL: photoURL,
+    email: email,
   });
 
   const toggleEdit = () => {
@@ -21,17 +28,18 @@ const Profile = () => {
     setUserData(updatedUser);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    profileCtx.updateDetails(userData.displayName, userData.photoURL);
+    await updateUserDetails(userData.displayName, userData.photoURL);
     toggleEdit();
+    await getUserDetails();
   };
 
   const cancelHandler = () => {
     setUserData({
-      displayName: profileCtx.displayName ? profileCtx.displayName : "",
-      photoURL: profileCtx.photoURL ? profileCtx.photoURL : "",
-      email: profileCtx.email,
+      displayName: displayName,
+      photoURL: photoURL,
+      email: email,
     });
     toggleEdit();
   };

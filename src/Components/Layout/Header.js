@@ -1,19 +1,27 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Container, Nav, Navbar, Image, NavDropdown } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
-import AuthContext from "../../store/Auth-context";
-import ProfileContext from "../../store/Profile-context";
+
+import { authActions } from "../../store/Auth";
 
 const Header = () => {
-  const authCtx = useContext(AuthContext);
-  const profileCtx = useContext(ProfileContext);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+  };
+
+  const photoURL = useSelector((state) => state.profile.photoURL);
+
   let userImg;
-  if (profileCtx.photoURL === "") {
+  if (photoURL === "") {
     userImg =
       "https://www.pngkey.com/png/detail/52-522921_kathrine-vangen-profile-pic-empty-png.png";
   } else {
-    userImg = profileCtx.photoURL;
+    userImg = photoURL;
   }
   return (
     <header className="shadow-sm">
@@ -32,7 +40,7 @@ const Header = () => {
                 }>
                 Home
               </NavLink>
-              {!authCtx.isLoggedIn && (
+              {!isLoggedIn && (
                 <NavLink
                   to="/auth"
                   className={({ isActive }) =>
@@ -41,7 +49,7 @@ const Header = () => {
                   Login
                 </NavLink>
               )}
-              {authCtx.isLoggedIn && (
+              {isLoggedIn && (
                 <NavDropdown
                   title={
                     <Image
@@ -60,7 +68,7 @@ const Header = () => {
                     <p className="ms-3">Account</p>
                   </Link>
                   <p
-                    onClick={authCtx.logout}
+                    onClick={logoutHandler}
                     style={{ cursor: "pointer" }}
                     className="text-primary ms-3">
                     Logout

@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import AuthContext from "../../store/Auth-context";
+import React from "react";
 import Expense from "../Expenses/Expense";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const authCtx = useContext(AuthContext);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const preLoginContent = (
     <div>
@@ -25,12 +25,8 @@ const Home = () => {
 
   return (
     <div>
-      {/* <h1 className="fw-bold text-center mt-3 text-primary">
-        Hi, {profileCtx.displayName}
-      </h1>
-       */}
-      {authCtx.isLoggedIn && <Expense />}
-      {!authCtx.isLoggedIn && preLoginContent}
+      {isLoggedIn && <Expense />}
+      {!isLoggedIn && preLoginContent}
     </div>
   );
 };

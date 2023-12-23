@@ -1,12 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import NewExpense from "./NewExpense";
 import ExpenseList from "./ExpenseList";
-import ExpenseContext from "../../store/Expense-context";
 import classes from "./Expense.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchExpenses } from "../../utils/expense";
+import { expenseActions } from "../../store/expense";
 
 const Expense = () => {
-  const expenseCtx = useContext(ExpenseContext);
+  const dispatch = useDispatch();
+
+  const getExpenses = useCallback(async () => {
+    const userId = localStorage.getItem("user");
+    const expenses = await fetchExpenses(userId);
+    dispatch(expenseActions.updateExpense(expenses));
+  }, [dispatch]);
+
+  useEffect(() => {
+    getExpenses();
+  }, [getExpenses]);
+
+  const expenses = useSelector((state) => state.expense.expenses);
+  const totalExpense = useSelector((state) => state.expense.totalExpense);
+
   const [hideForm, setHideForm] = useState(true);
   const [edit, setEdit] = useState(false);
   const [editValues, setEditValues] = useState({
@@ -15,10 +31,6 @@ const Expense = () => {
     desc: "",
     category: 0,
   });
-
-  // const toggleEdit = () => {
-  //   setEdit((prevState) => !prevState);
-  // };
 
   const toggleForm = () => {
     setEdit(false);
@@ -37,8 +49,8 @@ const Expense = () => {
   };
 
   let content;
-  if (expenseCtx.expenses.length) {
-    content = expenseCtx.expenses.map((expense) => (
+  if (expenses.length) {
+    content = expenses.map((expense) => (
       <ExpenseList
         key={expense.id}
         id={expense.id}
@@ -68,7 +80,7 @@ const Expense = () => {
     <>
       <div className={classes.totalCard}>
         <h1 className="fs-5">Total Expense:</h1>
-        <p className="fs-1 fw-bold">₹{expenseCtx.totalExpense.toFixed(2)}</p>
+        <p className="fs-3 fw-bold">₹{totalExpense.toFixed(2)}</p>
       </div>
       <Container className="shadow p-4 mt-4 rounded-4 d-flex justify-content-center">
         {!hideForm ? (

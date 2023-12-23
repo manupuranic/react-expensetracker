@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
-import ExpenseContext from "../../store/Expense-context";
+import { useDispatch } from "react-redux";
+import { expenseActions } from "../../store/expense";
+import { deleteExpenseApi, fetchExpenses } from "../../utils/expense";
 
 const ExpenseList = (props) => {
-  const expenseCtx = useContext(ExpenseContext);
+  const dispatch = useDispatch();
 
-  const deleteExpenseHandler = () => {
-    expenseCtx.deleteExpense(props.id);
+  const deleteExpenseHandler = async () => {
+    const userId = localStorage.getItem("user");
+    await deleteExpenseApi(props.id, userId);
+    const expenses = await fetchExpenses(userId);
+    dispatch(expenseActions.updateExpense(expenses));
   };
 
   const editExpenseHandler = () => {

@@ -1,9 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import ExpenseContext from "../../store/Expense-context";
+import { useDispatch } from "react-redux";
+import { expenseActions } from "../../store/expense";
+import {
+  fetchExpenses,
+  addNewExpense,
+  updateExpense,
+} from "../../utils/expense";
 
 const NewExpense = (props) => {
-  const expenseCtx = useContext(ExpenseContext);
+  const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
     amount: "",
@@ -31,24 +37,36 @@ const NewExpense = (props) => {
     setFormState(updatedState);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const expense = {
-      amount: formState.amount,
-      desc: formState.desc,
-      category: formState.category,
-    };
-    if (!props.edit) {
-      expenseCtx.addExpense(expense);
-    } else {
-      expenseCtx.editExpenses(expense, props.values.id);
+    if (
+      formState.amount.trim().length !== 0 &&
+      formState.desc.trim().length !== 0 &&
+      formState.category.trim().length !== 0
+    ) {
+      const expense = {
+        amount: formState.amount,
+        desc: formState.desc,
+        category: formState.category,
+      };
+      if (!props.edit) {
+        const userId = localStorage.getItem("user");
+        await addNewExpense(expense, userId);
+        const expenses = await fetchExpenses(userId);
+        dispatch(expenseActions.updateExpense(expenses));
+      } else {
+        const userId = localStorage.getItem("user");
+        await updateExpense(expense, props.values.id, userId);
+        const expenses = await fetchExpenses(userId);
+        dispatch(expenseActions.updateExpense(expenses));
+      }
+      setFormState({
+        amount: "",
+        desc: "",
+        category: 0,
+      });
+      props.onHideForm();
     }
-    setFormState({
-      amount: "",
-      desc: "",
-      category: 0,
-    });
-    props.onHideForm();
   };
 
   return (

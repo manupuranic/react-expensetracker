@@ -1,18 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
-import ProfileContext from "../../store/Profile-context";
+
+import { resetPassword } from "../../utils/profile";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const profileCtx = useContext(ProfileContext);
 
   const inputHandler = (e) => {
     setEmail(e.target.value);
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    profileCtx.resetPassword(email);
+    await resetPassword();
   };
 
   return (

@@ -30,12 +30,14 @@ export const getUserDetails = async () => {
       return {
         displayName: "",
         photoURL: "",
+        isEmailVerified: false,
       };
     }
   } else {
     return {
       displayName: "",
       photoURL: "",
+      isEmailVerified: false,
     };
   }
 };

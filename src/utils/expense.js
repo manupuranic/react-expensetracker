@@ -1,6 +1,5 @@
-export const addNewExpense = async (expense) => {
-  const URL =
-    "https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses.json";
+export const addNewExpense = async (expense, userId) => {
+  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${userId}.json`;
 
   try {
     const response = await fetch(URL, {
@@ -19,9 +18,8 @@ export const addNewExpense = async (expense) => {
   }
 };
 
-export const fetchExpenses = async () => {
-  const URL =
-    "https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses.json";
+export const fetchExpenses = async (userId) => {
+  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${userId}.json`;
 
   try {
     const response = await fetch(URL, {
@@ -30,7 +28,18 @@ export const fetchExpenses = async () => {
     });
     const data = await response.json();
     if (response.ok) {
-      return data;
+      const expenses = [];
+      for (let expenseId in data) {
+        const expense = {
+          id: expenseId,
+          amount: data[expenseId].amount,
+          desc: data[expenseId].desc,
+          category: data[expenseId].category,
+        };
+        expenses.push(expense);
+      }
+      // console.log(expenses);
+      return expenses;
     } else {
       throw new Error(data.error.message);
     }
@@ -39,8 +48,8 @@ export const fetchExpenses = async () => {
   }
 };
 
-export const updateExpense = async (expense, id) => {
-  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${id}.json`;
+export const updateExpense = async (expense, id, userId) => {
+  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${userId}/${id}.json`;
   try {
     const response = await fetch(URL, {
       method: "PUT",
@@ -58,8 +67,8 @@ export const updateExpense = async (expense, id) => {
   }
 };
 
-export const deleteExpenseApi = async (id) => {
-  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${id}.json`;
+export const deleteExpenseApi = async (id, userId) => {
+  const URL = `https://expense-tracker-7e7f9-default-rtdb.firebaseio.com/expenses/${userId}/${id}.json`;
   try {
     const response = await fetch(URL, {
       method: "DELETE",

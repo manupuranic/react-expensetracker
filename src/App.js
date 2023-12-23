@@ -1,35 +1,41 @@
+import React, { useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
-import AuthContext from "./store/Auth-context";
-import { ProfileProvider } from "./store/Profile-context";
+
 import Home from "./Pages/Home";
 import Auth from "./Pages/Auth";
 import Profile from "./Pages/Profile";
 import ForgotPassword from "./Pages/ForgotPassword";
 import RootLayout from "./Components/Layout/RootLayout";
-import { useContext } from "react";
-import { ExpenseProvider } from "./store/Expense-context";
+
+import { getUserDetails } from "./utils/profile";
+import { profileActions } from "./store/profile";
 
 function App() {
-  const authCtx = useContext(AuthContext);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+
+  const fetchUserDetails = useCallback(async () => {
+    const profile = await getUserDetails();
+    dispatch(profileActions.updateProfile(profile));
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, [fetchUserDetails]);
+
   return (
-    <ProfileProvider>
-      <ExpenseProvider>
-        <RootLayout>
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route
-              path="/profile"
-              element={
-                authCtx.isLoggedIn ? <Profile /> : <Navigate to="/auth" />
-              }
-            />
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </RootLayout>
-      </ExpenseProvider>
-    </ProfileProvider>
+    <RootLayout>
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route
+          path="/profile"
+          element={isLoggedIn ? <Profile /> : <Navigate to="/auth" />}
+        />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </RootLayout>
   );
 }
 
