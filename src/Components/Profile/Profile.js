@@ -8,9 +8,9 @@ import { updateUserDetails, getUserDetails } from "../../utils/profile";
 const Profile = () => {
   const [edit, setEdit] = useState(false);
 
-  const { displayName, photoURL, email } = useSelector(
-    (state) => state.profile
-  );
+  const displayName = useSelector((state) => state.profile.displayName);
+  const photoURL = useSelector((state) => state.profile.photoURL);
+  const email = useSelector((state) => state.profile.email);
 
   const [userData, setUserData] = useState({
     displayName: displayName,
@@ -46,7 +46,7 @@ const Profile = () => {
 
   return (
     <>
-      <Container className="shadow rounded p-4 mt-4">
+      <Container className="bg-white shadow rounded p-4 mt-4">
         <h3 className="text-primary text-center fw-bold">My Account</h3>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3">

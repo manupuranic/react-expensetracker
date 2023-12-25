@@ -82,14 +82,14 @@ const Expense = () => {
         <h1 className="fs-5">Total Expense:</h1>
         <p className="fs-3 fw-bold">₹{totalExpense.toFixed(2)}</p>
       </div>
-      <Container className="shadow p-4 mt-4 rounded-4 d-flex justify-content-center">
+      <Container className="bg-white shadow p-4 mt-4 rounded-4 d-flex justify-content-center">
         {!hideForm ? (
           <NewExpense edit={edit} values={editValues} onHideForm={toggleForm} />
         ) : (
           addExpenseButton
         )}
       </Container>
-      <Container className="shadow p-4 mt-4 mb-4 rounded-4">
+      <Container className="bg-white shadow p-4 mt-4 mb-4 rounded-4">
         <ul className="list-group">{content}</ul>
       </Container>
     </>

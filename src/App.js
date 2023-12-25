@@ -10,19 +10,27 @@ import RootLayout from "./Components/Layout/RootLayout";
 
 import { getUserDetails } from "./utils/profile";
 import { profileActions } from "./store/profile";
+import { fetchPremiumStatus } from "./utils/premium";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const darkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
 
   const fetchUserDetails = useCallback(async () => {
     const profile = await getUserDetails();
+    const isPremium = await fetchPremiumStatus();
     dispatch(profileActions.updateProfile(profile));
+    dispatch(profileActions.updatePremium(isPremium));
   }, [dispatch]);
 
   useEffect(() => {
     fetchUserDetails();
   }, [fetchUserDetails]);
+
+  useEffect(() => {
+    document.body.style.backgroundColor = darkMode ? "#343a40" : "#fff";
+  }, [darkMode]);
 
   return (
     <RootLayout>

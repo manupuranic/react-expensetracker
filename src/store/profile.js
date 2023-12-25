@@ -6,6 +6,7 @@ const initialState = {
   isComplete: false,
   isEmailVerified: false,
   email: "",
+  isPremium: false,
 };
 
 const profileSlice = createSlice({
@@ -26,6 +27,9 @@ const profileSlice = createSlice({
       ) {
         state.isComplete = true;
       }
+    },
+    updatePremium(state, action) {
+      state.isPremium = action.payload;
     },
   },
 });

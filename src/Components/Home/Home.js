@@ -2,9 +2,12 @@ import React from "react";
 import Expense from "../Expenses/Expense";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
+import { CSVLink } from "react-csv";
 
 const Home = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const expenses = useSelector((state) => state.expense.expenses);
 
   const preLoginContent = (
     <div>
@@ -27,6 +30,11 @@ const Home = () => {
     <div>
       {isLoggedIn && <Expense />}
       {!isLoggedIn && preLoginContent}
+      <div className="fixed-bottom d-flex justify-content-end">
+        <CSVLink data={expenses} filename="expense-report.csv" target="_blank">
+          <Button className="rounded m-4">Download Expenses</Button>
+        </CSVLink>
+      </div>
     </div>
   );
 };

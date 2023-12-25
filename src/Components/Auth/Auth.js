@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import classes from "./Auth.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import { getUserDetails } from "../../utils/profile";
+import { profileActions } from "../../store/profile";
+import { fetchPremiumStatus, initializePremium } from "../../utils/premium";
 
 import Button from "../UI/Button";
 import COLORS from "../UI/Constants";
@@ -21,6 +24,12 @@ const Auth = () => {
     isValidForm: false,
     isPasswordValid: true,
   });
+
+  const fetchUserDetails = async () => {
+    const profile = await getUserDetails();
+    console.log(profile);
+    dispatch(profileActions.updateProfile(profile));
+  };
 
   const toggleState = () => {
     setIsLogin((prev) => !prev);
@@ -75,11 +84,14 @@ const Auth = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-
         dispatch(
           authActions.login({ token: data.idToken, userId: data.localId })
         );
+        if (!isLogin) {
+          await initializePremium();
+        }
+        const isPremiumStatus = await fetchPremiumStatus();
+        dispatch(profileActions.updatePremium(isPremiumStatus));
         setFormState({
           email: "",
           password: "",
@@ -87,6 +99,7 @@ const Auth = () => {
           isPasswordValid: true,
           isValidForm: false,
         });
+        fetchUserDetails();
         navigate("/", { replace: true });
       } else {
         throw new Error(data.error.message);
